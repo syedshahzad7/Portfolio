@@ -61,7 +61,7 @@ export const BentoGridItem = ({
     navigator.clipboard.writeText(text);
     setCopied(true);
 
-    // Optional: reset after a bit so it can be replayed again
+    // reset so it can be replayed again
     setTimeout(() => setCopied(false), 2500);
   };
 
@@ -77,26 +77,27 @@ export const BentoGridItem = ({
           "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
       }}
     >
-      <div className={`${id === 6 && "flex justify-center"} h-full`}>
+      <div className={`${id === 6 ? "flex justify-center" : ""} h-full`}>
         <div className="w-full h-full absolute">
           {img && (
             <img
               src={img}
-              alt={img}
-              className={cn(imgClassName, "object-cover object-center ")}
+              alt={typeof title === "string" ? title : "grid-image"}
+              className={cn(imgClassName, "object-cover object-center")}
             />
           )}
         </div>
 
         <div
-          className={`absolute right-0 -bottom-5 ${
+          className={cn(
+            "absolute right-0 -bottom-5",
             id === 5 && "w-full opacity-80"
-          } `}
+          )}
         >
           {spareImg && (
             <img
               src={spareImg}
-              alt={spareImg}
+              alt={typeof title === "string" ? title : "spare-image"}
               className="object-cover object-center w-full h-full"
             />
           )}
@@ -111,14 +112,22 @@ export const BentoGridItem = ({
         <div
           className={cn(
             titleClassName,
-            "group-hover/bento:translate-x-2 transition duration-200 relative md:h-full min-h-40 flex flex-col px-5 p-5 lg:p-10"
+            "group-hover/bento:translate-x-2 transition duration-200 relative md:h-full min-h-40 flex flex-col px-5 p-5 lg:p-10",
+            // ✅ Force ONLY Grid 1 content to start from top-left
+            id === 1 && "items-start justify-start"
           )}
         >
           <div className="font-sans font-extralight md:max-w-32 md:text-xs lg:text-base text-sm text-[#C1C2D3] z-10">
             {description}
           </div>
 
-          <div className="font-sans text-lg lg:text-3xl max-w-96 font-bold z-10">
+          <div
+            className={cn(
+              "font-sans text-lg lg:text-3xl max-w-96 font-bold z-10",
+              // ✅ Force ONLY Grid 1 title text alignment to top-left
+              id === 1 && "self-start text-left"
+            )}
+          >
             {title}
           </div>
 
@@ -130,8 +139,7 @@ export const BentoGridItem = ({
                 {leftLists.map((item, i) => (
                   <span
                     key={i}
-                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
-                    lg:opacity-100 rounded-lg text-center bg-[#10132E]"
+                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 lg:opacity-100 rounded-lg text-center bg-[#10132E]"
                   >
                     {item}
                   </span>
@@ -144,8 +152,7 @@ export const BentoGridItem = ({
                 {rightLists.map((item, i) => (
                   <span
                     key={i}
-                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
-                    lg:opacity-100 rounded-lg text-center bg-[#10132E]"
+                    className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 lg:opacity-100 rounded-lg text-center bg-[#10132E]"
                   >
                     {item}
                   </span>
